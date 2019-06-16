@@ -1,0 +1,161 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Central
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.77.1
+ip dhcp excluded-address 192.168.77.21 192.168.77.254
+ip dhcp excluded-address 192.168.21.193
+ip dhcp excluded-address 192.168.21.215 192.168.21.254
+ip dhcp excluded-address 192.168.21.129
+ip dhcp excluded-address 192.168.21.151 192.168.21.24
+ip dhcp excluded-address 192.168.21.65
+ip dhcp excluded-address 192.168.21.87 192.168.21.254
+ip dhcp excluded-address 192.168.21.1
+ip dhcp excluded-address 192.168.21.151 192.168.21.190
+ip dhcp excluded-address 192.168.21.21 192.168.21.62
+ip dhcp excluded-address 192.168.21.87 192.168.21.126
+!
+ip dhcp pool VLAN5
+ network 192.168.21.0 255.255.255.192
+ default-router 192.168.21.1
+ dns-server 1.1.1.1
+ip dhcp pool VLAN10
+ network 192.168.21.64 255.255.255.192
+ default-router 192.168.21.65
+ dns-server 1.1.1.1
+ip dhcp pool VLAN15
+ network 192.168.21.128 255.255.255.192
+ default-router 192.168.21.129
+ dns-server 1.1.1.1
+ip dhcp pool VLAN50
+ network 192.168.21.192 255.255.255.192
+ default-router 192.168.21.193
+ dns-server 1.1.1.1
+ip dhcp pool VLAN77
+ network 192.168.77.0 255.255.255.0
+ default-router 192.168.77.1
+ dns-server 1.1.1.1
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2911/K9 sn FTX152484Y2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.5
+ encapsulation dot1Q 5
+ ip address 192.168.21.1 255.255.255.192
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:DB6:ACAD:AA1::3/64
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.21.65 255.255.255.192
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:DB6:ACAD:AA2::3/64
+!
+interface GigabitEthernet0/0.15
+ encapsulation dot1Q 15
+ ip address 192.168.21.129 255.255.255.192
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:DB6:ACAD:AA3::3/64
+!
+interface GigabitEthernet0/0.50
+ encapsulation dot1Q 50
+ ip address 192.168.21.193 255.255.255.192
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:DB6:ACAD:AA4::3/64
+!
+interface GigabitEthernet0/0.77
+ encapsulation dot1Q 77
+ ip address 192.168.77.1 255.255.255.0
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:DB8:ACAA:A::1/64
+!
+interface GigabitEthernet0/1
+ ip address 192.168.20.2 255.255.255.252
+ duplex auto
+ speed auto
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:DB8:ACAD:BB::3/64
+ ipv6 enable
+!
+interface GigabitEthernet0/2
+ ip address 172.16.11.1 255.255.255.0
+ duplex auto
+ speed auto
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:DB8:ACAD:DD::3/64
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ log-adjacency-changes
+ network 172.16.11.0 0.0.0.255 area 0
+ network 192.168.21.0 0.0.0.255 area 0
+ network 192.168.77.0 0.0.0.255 area 0
+ network 192.168.20.0 0.0.0.3 area 0
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 192.168.20.1 
+!
+ip flow-export version 9
+!
+ipv6 route ::/0 2001:DB8:ACAD:BB::2
+!
+!
+no cdp run
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+

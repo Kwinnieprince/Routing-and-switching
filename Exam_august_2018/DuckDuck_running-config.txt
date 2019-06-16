@@ -1,0 +1,167 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname DuckDuck
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.10.1
+ip dhcp excluded-address 192.168.10.254
+ip dhcp excluded-address 192.168.20.1
+ip dhcp excluded-address 192.168.30.1
+ip dhcp excluded-address 192.168.50.1
+ip dhcp excluded-address 192.168.20.254
+ip dhcp excluded-address 192.168.30.254
+ip dhcp excluded-address 192.168.50.254
+!
+ip dhcp pool yellow
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 8.8.8.8
+ip dhcp pool green
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 8.8.8.8
+ip dhcp pool red
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 8.8.8.8
+ip dhcp pool lightblue
+ network 192.168.50.0 255.255.255.0
+ default-router 192.168.50.1
+ dns-server 8.8.8.8
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2901/K9 sn FTX15246926
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 1.1.1.1 255.255.255.0
+ ip nat outside
+ duplex auto
+ speed auto
+ ipv6 address FE80::4 link-local
+ ipv6 address 2001:CAFE:D::1/64
+!
+interface GigabitEthernet0/0.10
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0.20
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0.30
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/1
+ no ip address
+ ip nat inside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ ipv6 address FE80::4 link-local
+ ipv6 address 2001:CAFE:E:10::1/64
+!
+interface GigabitEthernet0/1.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ ipv6 address FE80::4 link-local
+ ipv6 address 2001:CAFE:E:20::1/64
+!
+interface GigabitEthernet0/1.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
+ ipv6 address FE80::4 link-local
+ ipv6 address 2001:CAFE:E:30::1/64
+!
+interface GigabitEthernet0/1.40
+ encapsulation dot1Q 40
+ ip address 192.168.40.1 255.255.255.0
+ ipv6 address FE80::4 link-local
+ ipv6 address 2001:CAFE:E:40::1/64
+!
+interface GigabitEthernet0/1.50
+ encapsulation dot1Q 50
+ ip address 192.168.50.1 255.255.255.0
+ ipv6 address FE80::4 link-local
+ ipv6 address 2001:CAFE:E:50::1/64
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ redistribute connected 
+ network 1.0.0.0
+ no auto-summary
+!
+ip nat inside source list 1 interface GigabitEthernet0/0 overload
+ip nat inside source static 192.168.40.2 1.1.1.5 
+ip classless
+!
+ip flow-export version 9
+!
+ipv6 route 2001:CAFE:A::/64 2001:CAFE:D::2
+ipv6 route 2001:CAFE:B::/64 2001:CAFE:D::3
+ipv6 route 2001:CAFE:C::/64 2001:CAFE:D::2
+ipv6 route 2001:CAFE:C::/64 2001:CAFE:D::3
+ipv6 route 2001:CAFE:A::/64 2001:CAFE:D::3
+!
+access-list 1 permit 192.168.10.0 0.0.0.255
+access-list 1 permit 192.168.20.0 0.0.0.255
+access-list 1 permit 192.168.30.0 0.0.0.255
+access-list 1 permit 192.168.50.0 0.0.0.255
+!
+no cdp run
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+

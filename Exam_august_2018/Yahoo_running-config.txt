@@ -1,0 +1,92 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Yahoo
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2901/K9 sn FTX1524A1O1
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 1.1.1.3 255.255.255.0
+ duplex auto
+ speed auto
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:CAFE:D::3/64
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:CAFE:B::3/64
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ redistribute connected 
+ network 1.0.0.0
+ no auto-summary
+!
+ip classless
+!
+ip flow-export version 9
+!
+ipv6 route 2001:CAFE:A::/64 2001:CAFE:B::1
+ipv6 route 2001:CAFE:C::/64 2001:CAFE:B::1
+!
+!
+no cdp run
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
